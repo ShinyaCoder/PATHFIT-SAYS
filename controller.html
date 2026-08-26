@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>PATHFIT-SAYS Controller</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            background: #111;
+
+            font-family: Arial, sans-serif;
+
+            color: white;
+        }
+
+        .controller {
+            width: 90%;
+            max-width: 450px;
+
+            padding: 30px;
+
+            text-align: center;
+
+            background: #1c1c1c;
+
+            border: 3px solid white;
+
+            border-radius: 20px;
+
+            box-shadow: 0 0 25px rgba(255,255,255,0.2);
+        }
+
+        h1 {
+            margin: 0;
+
+            font-size: 38px;
+
+            letter-spacing: 3px;
+        }
+
+        .subtitle {
+            margin-top: 8px;
+            margin-bottom: 35px;
+
+            font-size: 14px;
+
+            letter-spacing: 3px;
+
+            opacity: 0.6;
+        }
+
+        button {
+            width: 100%;
+
+            padding: 22px;
+
+            margin-top: 15px;
+
+            border: 2px solid white;
+
+            border-radius: 12px;
+
+            background: #292929;
+
+            color: white;
+
+            font-size: 19px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        button:active {
+            transform: scale(0.97);
+        }
+
+        .player-section {
+            margin-top: 30px;
+        }
+
+        .player-title {
+            font-size: 14px;
+
+            opacity: 0.6;
+
+            margin-bottom: 10px;
+        }
+
+        .player-controls {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 15px;
+        }
+
+        .player-button {
+            width: 70px;
+
+            padding: 15px;
+
+            margin: 0;
+
+            font-size: 28px;
+        }
+
+        #playerCount {
+            font-size: 35px;
+
+            font-weight: bold;
+
+            min-width: 70px;
+        }
+
+        #status {
+            margin-top: 25px;
+
+            font-size: 14px;
+
+            opacity: 0.6;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <div class="controller">
+
+        <h1>🦑 SQUIDFIT</h1>
+
+        <div class="subtitle">
+            GAME CONTROLLER
+        </div>
+
+
+        <!-- START -->
+
+        <button id="startButton">
+            ▶ START GAME
+        </button>
+
+
+        <!-- NEXT COMMAND -->
+
+        <button id="nextButton">
+            ⚡ NEXT CHALLENGE
+        </button>
+
+
+        <!-- PLAYER COUNT -->
+
+        <div class="player-section">
+
+            <div class="player-title">
+                PLAYERS REMAINING
+            </div>
+
+
+            <div class="player-controls">
+
+                <button
+                    id="minusPlayer"
+                    class="player-button">
+
+                    −
+
+                </button>
+
+
+                <div id="playerCount">
+                    53
+                </div>
+
+
+                <button
+                    id="plusPlayer"
+                    class="player-button">
+
+                    +
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div id="status">
+            READY
+        </div>
+
+    </div>
+
+
+    <script type="module">
+
+        // =========================
+        // FIREBASE IMPORTS
+        // =========================
+
+        import {
+            initializeApp
+        }
+        from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+
+        import {
+            getDatabase,
+            ref,
+            set
+        }
+        from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
+
+
+        // =========================
+        // FIREBASE CONFIG
+        // =========================
+
+        const firebaseConfig = {
+
+            apiKey:
+                "AIzaSyAPAyfpSbN8RhHgenMIxFqZTQds1hjCofE",
+
+            authDomain:
+                "pathfit-says.firebaseapp.com",
+
+            databaseURL:
+                "https://pathfit-says-default-rtdb.firebaseio.com",
+
+            projectId:
+                "pathfit-says",
+
+            storageBucket:
+                "pathfit-says.firebasestorage.app",
+
+            messagingSenderId:
+                "369392989206",
+
+            appId:
+                "1:369392989206:web:ef2a369b78afb59a0bb137"
+
+        };
+
+
+        // =========================
+        // CONNECT FIREBASE
+        // =========================
+
+        const app =
+            initializeApp(firebaseConfig);
+
+
+        const db =
+            getDatabase(app);
+
+
+        const gameRef =
+            ref(db, "game");
+
+
+        const playersRef =
+            ref(db, "game/players");
+
+
+        // =========================
+        // COMMANDS
+        // =========================
+
+        const commands = [
+
+            "5 SQUATS!",
+            "HIGH KNEES!",
+            "CLAP 5 TIMES!",
+            "TOUCH YOUR TOES!",
+            "TOUCH YOUR KNEES!",
+            "JUMP 5 TIMES!",
+            "MARCH IN PLACE!",
+            "WAVE YOUR HANDS!",
+
+            "DANCE!",
+            "ACT LIKE A CHICKEN!",
+            "WALK LIKE A ROBOT!",
+            "POSE LIKE A SUPERHERO!",
+            "MAKE A HEART WITH YOUR HANDS!",
+            "SHAKE YOUR SHOULDERS!",
+            "FREEZE!",
+
+            "5 LUNGES!",
+            "3 BURPEES!",
+            "FROG JUMP!",
+            "CRAB WALK!",
+            "RUN IN PLACE!",
+            "STAND ON ONE LEG!",
+            "DO 3 JUMPING JACKS!",
+            "DO 5 ARM CIRCLES!",
+
+            "SPIN AROUND!",
+            "TOUCH YOUR HEAD!",
+            "TOUCH YOUR LEFT EAR!",
+            "TOUCH YOUR RIGHT KNEE!",
+            "RAISE BOTH HANDS!",
+            "CROUCH DOWN!",
+            "STAND STILL!",
+
+            "DO 2 SQUATS!",
+            "JUMP ONCE!",
+            "CLAP 3 TIMES!",
+            "TURN AROUND!",
+            "WIGGLE YOUR ARMS!",
+            "PRETEND TO BE A FROG!"
+
+        ];
+
+
+        // =========================
+        // VARIABLES
+        // =========================
+
+        let lastCommand = "";
+
+        let players = 53;
+
+
+        // =========================
+        // SEND COMMAND
+        // =========================
+
+        function sendCommand() {
+
+            let command;
+
+
+            do {
+
+                command =
+                    commands[
+                        Math.floor(
+                            Math.random() *
+                            commands.length
+                        )
+                    ];
+
+            } while (
+                command === lastCommand
+            );
+
+
+            lastCommand = command;
+
+
+            // 50% chance of PATHFIT SAYS
+
+            const pathfitSays =
+                Math.random() < 0.5;
+
+
+            set(gameRef, {
+
+                command: command,
+
+                pathfitSays: pathfitSays,
+
+                time: Date.now()
+
+            })
+
+            .then(() => {
+
+                document.getElementById(
+                    "status"
+                ).innerHTML =
+                    "COMMAND SENT ✓";
+
+            })
+
+            .catch((error) => {
+
+                console.error(error);
+
+                document.getElementById(
+                    "status"
+                ).innerHTML =
+                    "CONNECTION ERROR";
+
+            });
+
+        }
+
+
+        // =========================
+        // START GAME
+        // =========================
+
+        document.getElementById(
+            "startButton"
+        ).addEventListener(
+            "click",
+            sendCommand
+        );
+
+
+        // =========================
+        // NEXT CHALLENGE
+        // =========================
+
+        document.getElementById(
+            "nextButton"
+        ).addEventListener(
+            "click",
+            sendCommand
+        );
+
+
+        // =========================
+        // REMOVE PLAYER
+        // =========================
+
+        document.getElementById(
+            "minusPlayer"
+        ).addEventListener(
+            "click",
+            function () {
+
+                if (players > 0) {
+
+                    players--;
+
+                    set(
+                        playersRef,
+                        players
+                    );
+
+                    document.getElementById(
+                        "playerCount"
+                    ).innerHTML =
+                        players;
+
+                    document.getElementById(
+                        "status"
+                    ).innerHTML =
+                        "PLAYER REMOVED";
+
+                }
+
+            }
+        );
+
+
+        // =========================
+        // ADD PLAYER
+        // =========================
+
+        document.getElementById(
+            "plusPlayer"
+        ).addEventListener(
+            "click",
+            function () {
+
+                if (players < 53) {
+
+                    players++;
+
+                    set(
+                        playersRef,
+                        players
+                    );
+
+                    document.getElementById(
+                        "playerCount"
+                    ).innerHTML =
+                        players;
+
+                    document.getElementById(
+                        "status"
+                    ).innerHTML =
+                        "PLAYER ADDED";
+
+                }
+
+            }
+        );
+
+
+        console.log(
+            "SQUIDFIT Controller connected!"
+        );
+
+    </script>
+
+</body>
+
+</html>
