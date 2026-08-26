@@ -22,9 +22,83 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+
 const db = getDatabase(app);
 
 const gameRef = ref(db, "game");
+
+const playersRef = ref(db, "game/players");
+
+
+// ===============================
+// COMMANDS
+// ===============================
+
+const commands = [
+
+    // EASY
+
+    "5 SQUATS!",
+    "HIGH KNEES!",
+    "CLAP 5 TIMES!",
+    "TOUCH YOUR TOES!",
+    "TOUCH YOUR KNEES!",
+    "JUMP 5 TIMES!",
+    "MARCH IN PLACE!",
+    "WAVE YOUR HANDS!",
+
+
+    // FUNNY
+
+    "DANCE!",
+    "ACT LIKE A CHICKEN!",
+    "WALK LIKE A ROBOT!",
+    "POSE LIKE A SUPERHERO!",
+    "MAKE A HEART WITH YOUR HANDS!",
+    "SHAKE YOUR SHOULDERS!",
+    "FREEZE!",
+
+
+    // FITNESS
+
+    "5 LUNGES!",
+    "3 BURPEES!",
+    "FROG JUMP!",
+    "CRAB WALK!",
+    "RUN IN PLACE!",
+    "STAND ON ONE LEG!",
+    "DO 3 JUMPING JACKS!",
+    "DO 5 ARM CIRCLES!",
+
+
+    // TRICKY
+
+    "SPIN AROUND!",
+    "TOUCH YOUR HEAD!",
+    "TOUCH YOUR LEFT EAR!",
+    "TOUCH YOUR RIGHT KNEE!",
+    "RAISE BOTH HANDS!",
+    "CROUCH DOWN!",
+    "STAND STILL!",
+
+
+    // CHAOS
+
+    "DO 2 SQUATS!",
+    "JUMP ONCE!",
+    "CLAP 3 TIMES!",
+    "TURN AROUND!",
+    "WIGGLE YOUR ARMS!",
+    "PRETEND TO BE A FROG!"
+
+];
+
+
+// ===============================
+// VARIABLES
+// ===============================
+
+let lastCommand = "";
 
 
 // ===============================
@@ -33,48 +107,49 @@ const gameRef = ref(db, "game");
 
 function startGame() {
 
-    const menu = document.getElementById("mainMenu");
-    const game = document.getElementById("gameScreen");
+    const menu =
+        document.getElementById("mainMenu");
+
+    const game =
+        document.getElementById("gameScreen");
+
 
     if (menu) {
+
         menu.style.display = "none";
+
     }
+
 
     if (game) {
+
         game.style.display = "block";
+
     }
 
 }
 
 
 // ===============================
-// HOW TO PLAY
-// ===============================
-
-function showInstructions() {
-
-    alert(
-        "HOW TO PLAY\n\n" +
-        "If you hear 'PATHFIT SAYS' → DO IT!\n\n" +
-        "If you DON'T hear 'PATHFIT SAYS' → DON'T DO IT!"
-    );
-
-}
-
-
-// ===============================
-// FIREBASE LISTENER
+// FIREBASE GAME LISTENER
 // ===============================
 
 onValue(gameRef, (snapshot) => {
 
     const data = snapshot.val();
 
-    console.log("Firebase data:", data);
 
     if (!data) {
+
         return;
+
     }
+
+
+    console.log(
+        "Firebase command received:",
+        data
+    );
 
 
     const commandElement =
@@ -84,31 +159,34 @@ onValue(gameRef, (snapshot) => {
         document.getElementById("commandPrefix");
 
 
-    if (!commandElement || !prefixElement) {
+    if (!commandElement ||
+        !prefixElement) {
+
         return;
+
     }
 
 
-    // Show the game when a controller
-    // sends a command
-
-    document.getElementById("mainMenu").style.display = "none";
-
-    document.getElementById("gameScreen").style.display = "block";
-
+    // Fade out
 
     commandElement.style.opacity = "0";
+
     prefixElement.style.opacity = "0";
 
 
     setTimeout(() => {
+
+
+        // PATHFIT SAYS
 
         if (data.pathfitSays === true) {
 
             prefixElement.innerHTML =
                 "PATHFIT SAYS";
 
-        } else {
+        }
+
+        else {
 
             prefixElement.innerHTML =
                 "";
@@ -116,12 +194,18 @@ onValue(gameRef, (snapshot) => {
         }
 
 
+        // COMMAND
+
         commandElement.innerHTML =
             data.command || "READY?";
 
 
+        // Fade in
+
         commandElement.style.opacity = "1";
+
         prefixElement.style.opacity = "1";
+
 
     }, 300);
 
@@ -129,12 +213,62 @@ onValue(gameRef, (snapshot) => {
 
 
 // ===============================
-// MAKE FUNCTIONS AVAILABLE
+// PLAYER COUNT LISTENER
 // ===============================
 
-window.startGame = startGame;
+onValue(playersRef, (snapshot) => {
 
-window.showInstructions = showInstructions;
+    const players =
+        snapshot.val();
 
 
-console.log("SQUIDFIT GAME CONNECTED!");
+    const playerElement =
+        document.getElementById("players");
+
+
+    if (
+        playerElement &&
+        players !== null
+    ) {
+
+        playerElement.innerHTML =
+            players;
+
+    }
+
+});
+
+
+// ===============================
+// HOW TO PLAY
+// ===============================
+
+function showInstructions() {
+
+    alert(
+
+        "HOW TO PLAY\n\n" +
+
+        "If you hear 'PATHFIT SAYS' → DO IT!\n\n" +
+
+        "If you DON'T hear 'PATHFIT SAYS' → DON'T DO IT!"
+
+    );
+
+}
+
+
+// ===============================
+// MAKE BUTTONS WORK
+// ===============================
+
+window.startGame =
+    startGame;
+
+window.showInstructions =
+    showInstructions;
+
+
+console.log(
+    "SQUIDFIT GAME CONNECTED TO FIREBASE!"
+);
