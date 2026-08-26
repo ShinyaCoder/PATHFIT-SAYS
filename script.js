@@ -1,82 +1,81 @@
-const commands = [
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 
-    // EASY
-    "5 SQUATS!",
-    "HIGH KNEES!",
-    "CLAP 5 TIMES!",
-    "TOUCH YOUR TOES!",
-    "TOUCH YOUR KNEES!",
-    "JUMP 5 TIMES!",
-    "MARCH IN PLACE!",
-    "WAVE YOUR HANDS!",
-
-    // FUNNY
-    "DANCE!",
-    "ACT LIKE A CHICKEN!",
-    "WALK LIKE A ROBOT!",
-    "POSE LIKE A SUPERHERO!",
-    "MAKE A HEART WITH YOUR HANDS!",
-    "SHAKE YOUR SHOULDERS!",
-    "FREEZE!",
-
-    // FITNESS
-    "5 LUNGES!",
-    "3 BURPEES!",
-    "FROG JUMP!",
-    "CRAB WALK!",
-    "RUN IN PLACE!",
-    "STAND ON ONE LEG!",
-    "DO 3 JUMPING JACKS!",
-    "DO 5 ARM CIRCLES!",
-
-    // TRICKY
-    "SPIN AROUND!",
-    "TOUCH YOUR HEAD!",
-    "TOUCH YOUR LEFT EAR!",
-    "TOUCH YOUR RIGHT KNEE!",
-    "RAISE BOTH HANDS!",
-    "CROUCH DOWN!",
-    "STAND STILL!",
-
-    // CHAOS
-    "DO 2 SQUATS!",
-    "JUMP ONCE!",
-    "CLAP 3 TIMES!",
-    "TURN AROUND!",
-    "WIGGLE YOUR ARMS!",
-    "PRETEND TO BE A FROG!"
-
-];
+import {
+    getDatabase,
+    ref,
+    onValue
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
 
 
-let players = 53;
+// ===============================
+// FIREBASE
+// ===============================
 
-let round = 1;
+const firebaseConfig = {
+    apiKey: "AIzaSyAPAyfpSbN8RhHgenMIxFqZTQds1hjCofE",
+    authDomain: "pathfit-says.firebaseapp.com",
+    databaseURL: "https://pathfit-says-default-rtdb.firebaseio.com",
+    projectId: "pathfit-says",
+    storageBucket: "pathfit-says.firebasestorage.app",
+    messagingSenderId: "369392989206",
+    appId: "1:369392989206:web:ef2a369b78afb59a0bb137"
+};
 
-let lastCommand = "";
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+const gameRef = ref(db, "game");
 
 
-
-/* =========================
-   START GAME
-   ========================= */
+// ===============================
+// START GAME
+// ===============================
 
 function startGame() {
 
-    document.getElementById("mainMenu").style.display = "none";
+    const menu = document.getElementById("mainMenu");
+    const game = document.getElementById("gameScreen");
 
-    document.getElementById("gameScreen").style.display = "block";
+    if (menu) {
+        menu.style.display = "none";
+    }
 
-    nextCommand();
+    if (game) {
+        game.style.display = "block";
+    }
+
 }
 
 
+// ===============================
+// HOW TO PLAY
+// ===============================
 
-/* =========================
-   RANDOM COMMAND
-   ========================= */
+function showInstructions() {
 
-function nextCommand() {
+    alert(
+        "HOW TO PLAY\n\n" +
+        "If you hear 'PATHFIT SAYS' → DO IT!\n\n" +
+        "If you DON'T hear 'PATHFIT SAYS' → DON'T DO IT!"
+    );
+
+}
+
+
+// ===============================
+// FIREBASE LISTENER
+// ===============================
+
+onValue(gameRef, (snapshot) => {
+
+    const data = snapshot.val();
+
+    console.log("Firebase data:", data);
+
+    if (!data) {
+        return;
+    }
+
 
     const commandElement =
         document.getElementById("command");
@@ -85,35 +84,26 @@ function nextCommand() {
         document.getElementById("commandPrefix");
 
 
-    commandElement.style.opacity = "0";
+    if (!commandElement || !prefixElement) {
+        return;
+    }
 
+
+    // Show the game when a controller
+    // sends a command
+
+    document.getElementById("mainMenu").style.display = "none";
+
+    document.getElementById("gameScreen").style.display = "block";
+
+
+    commandElement.style.opacity = "0";
     prefixElement.style.opacity = "0";
 
 
-    setTimeout(function() {
+    setTimeout(() => {
 
-        let randomCommand;
-
-        do {
-
-            randomCommand =
-                commands[
-                    Math.floor(
-                        Math.random() * commands.length
-                    )
-                ];
-
-        } while (randomCommand === lastCommand);
-
-
-        lastCommand = randomCommand;
-
-
-        let pathfitSays =
-            Math.random() < 0.5;
-
-
-        if (pathfitSays) {
+        if (data.pathfitSays === true) {
 
             prefixElement.innerHTML =
                 "PATHFIT SAYS";
@@ -127,135 +117,24 @@ function nextCommand() {
 
 
         commandElement.innerHTML =
-            randomCommand;
+            data.command || "READY?";
 
 
         commandElement.style.opacity = "1";
-
         prefixElement.style.opacity = "1";
-
 
     }, 300);
 
-}
-
-    let randomCommand;
-
-    // Prevent the same command twice in a row
-    do {
-
-        randomCommand =
-            commands[Math.floor(Math.random() * commands.length)];
-
-    } while (randomCommand === lastCommand);
+});
 
 
-    lastCommand = randomCommand;
+// ===============================
+// MAKE FUNCTIONS AVAILABLE
+// ===============================
+
+window.startGame = startGame;
+
+window.showInstructions = showInstructions;
 
 
-    // 50% chance of saying PATHFIT SAYS
-    let pathfitSays = Math.random() < 0.5;
-
-
-    if (pathfitSays) {
-
-        document.getElementById("commandPrefix").innerHTML =
-            "PATHFIT SAYS";
-
-    } else {
-
-        document.getElementById("commandPrefix").innerHTML =
-            "";
-
-    }
-
-
-    document.getElementById("command").innerHTML =
-        randomCommand;
-
-
-
-
-
-/* =========================
-   HOW TO PLAY
-   ========================= */
-
-function showInstructions() {
-
-    alert(
-        "RULES:\n\n" +
-        "If you hear 'PATHFIT SAYS', DO IT.\n\n" +
-        "If 'PATHFIT SAYS' is NOT said, DON'T DO IT!"
-    );
-
-}
-
-/* =========================
-   PRESENTER MODE
-   ========================= */
-
-function openPresenter() {
-
-    document.getElementById("presenterPanel")
-        .style.display = "flex";
-
-}
-
-
-function closePresenter() {
-
-    document.getElementById("presenterPanel")
-        .style.display = "none";
-
-}
-
-
-
-/* =========================
-   PLAYER COUNT
-   ========================= */
-
-function removePlayer() {
-
-    if (players > 0) {
-
-        players--;
-
-        document.getElementById("players").innerHTML =
-            players;
-
-    }
-
-}
-
-
-function addPlayer() {
-
-    if (players < 53) {
-
-        players++;
-
-        document.getElementById("players").innerHTML =
-            players;
-
-    }
-
-}
-
-
-
-/* =========================
-   NEXT ROUND
-   ========================= */
-
-function nextRound() {
-
-    round++;
-
-    document.getElementById("round").innerHTML =
-        round;
-
-    nextCommand();
-
-}
+console.log("SQUIDFIT GAME CONNECTED!");
