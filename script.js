@@ -262,11 +262,40 @@ function showInstructions() {
 // MAKE BUTTONS WORK
 // ===============================
 
-window.startGame =
-    startGame;
+// ===============================
+// MAIN MENU BUTTONS
+// ===============================
 
-window.showInstructions =
-    showInstructions;
+const startButton =
+    document.getElementById("startButton");
+
+const instructionsButton =
+    document.getElementById("instructionsButton");
+
+
+if (startButton) {
+
+    startButton.addEventListener(
+        "click",
+        startGame
+    );
+
+}
+
+
+if (instructionsButton) {
+
+    instructionsButton.addEventListener(
+        "click",
+        showInstructions
+    );
+
+}
+
+
+console.log(
+    "SQUIDFIT GAME CONNECTED!"
+);
 
 
 console.log(
