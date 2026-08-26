@@ -16,14 +16,11 @@
 </head>
 
 <body>
-    <button class="presenter-button"
-        onclick="openPresenter()">
-    ⚙️
-</button>
 
-    <!-- MAIN MENU -->
 
-<!-- MAIN MENU -->
+<!-- =========================
+     MAIN MENU
+========================= -->
 
 <div class="menu" id="mainMenu">
 
@@ -54,7 +51,10 @@
 </div>
 
 
-<!-- GAME SCREEN -->
+
+<!-- =========================
+     GAME SCREEN
+========================= -->
 
 <div class="game-screen" id="gameScreen">
 
@@ -88,38 +88,15 @@
         Listen carefully...
     </div>
 
-    <!-- PRESENTER PANEL -->
-
-<div class="presenter-panel" id="presenterPanel">
-
-    <h2>PRESENTER MODE</h2>
-
-    <button onclick="nextCommand()">
-        NEXT COMMAND
-    </button>
-
-    <button onclick="removePlayer()">
-        -1 PLAYER
-    </button>
-
-    <button onclick="addPlayer()">
-        +1 PLAYER
-    </button>
-
-    <button onclick="nextRound()">
-        NEXT ROUND
-    </button>
-
-    <button onclick="closePresenter()">
-        CLOSE
-    </button>
-
-</div>
 </div>
 
 
 
-    <script src="script.js"></script>
+<!-- =========================
+     FIREBASE SCRIPT
+========================= -->
+
+<script type="module" src="script.js"></script>
 
 </body>
 
