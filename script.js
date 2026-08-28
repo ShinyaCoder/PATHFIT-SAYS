@@ -257,6 +257,38 @@ function showInstructions() {
 
 }
 
+onValue(gameRef, (snapshot) => {
+
+    const data = snapshot.val();
+
+    if (!data) {
+        return;
+    }
+
+    // Your existing command code...
+
+});
+
+const roundRef = ref(db, "game/round");
+
+onValue(roundRef, (snapshot) => {
+
+    const round = snapshot.val();
+
+    if (round !== null) {
+
+        const roundElement =
+            document.getElementById("round");
+
+        if (roundElement) {
+
+            roundElement.innerHTML = round;
+
+        }
+
+    }
+
+});
 
 // ===============================
 // MAKE BUTTONS WORK
