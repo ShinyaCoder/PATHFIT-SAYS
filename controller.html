@@ -554,7 +554,47 @@ let pathfitSays = true;
 
 let players = 53;
 
+    let round = 1;
 
+const roundRef = ref(db, "game/round");
+
+// ===============================
+// ROUND CONTROLS
+// ===============================
+
+document
+.getElementById("plusRound")
+.addEventListener("click", () => {
+
+    round++;
+
+    document
+    .getElementById("roundCount")
+    .innerHTML = round;
+
+    set(roundRef, round);
+
+});
+
+
+document
+.getElementById("minusRound")
+.addEventListener("click", () => {
+
+    if (round > 1) {
+
+        round--;
+
+        document
+        .getElementById("roundCount")
+        .innerHTML = round;
+
+        set(roundRef, round);
+
+    }
+
+});
+    
 // ===============================
 // PATHFIT SAYS BUTTON
 // ===============================
