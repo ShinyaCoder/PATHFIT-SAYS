@@ -8,7 +8,7 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
-    <title>PATHFIT-SAYS Controller</title>
+    <title>SQUIDFIT Controller</title>
 
     <style>
 
@@ -32,10 +32,11 @@
         }
 
         .controller {
-            width: 90%;
+
+            width: 92%;
             max-width: 450px;
 
-            padding: 30px;
+            padding: 25px;
 
             text-align: center;
 
@@ -45,34 +46,42 @@
 
             border-radius: 20px;
 
-            box-shadow: 0 0 25px rgba(255,255,255,0.2);
+            box-shadow:
+                0 0 25px rgba(255,255,255,0.2);
+
         }
 
         h1 {
+
             margin: 0;
 
-            font-size: 38px;
+            font-size: 36px;
 
             letter-spacing: 3px;
+
         }
 
         .subtitle {
-            margin-top: 8px;
-            margin-bottom: 35px;
 
-            font-size: 14px;
+            margin-top: 8px;
+
+            margin-bottom: 25px;
+
+            font-size: 13px;
 
             letter-spacing: 3px;
 
             opacity: 0.6;
+
         }
 
         button {
+
             width: 100%;
 
-            padding: 22px;
+            padding: 18px;
 
-            margin-top: 15px;
+            margin-top: 12px;
 
             border: 2px solid white;
 
@@ -82,30 +91,82 @@
 
             color: white;
 
-            font-size: 19px;
+            font-size: 17px;
 
             font-weight: bold;
 
             cursor: pointer;
+
         }
 
         button:active {
+
             transform: scale(0.97);
+
         }
 
-        .player-section {
-            margin-top: 30px;
+        .section {
+
+            margin-top: 25px;
+
         }
 
-        .player-title {
-            font-size: 14px;
+        .label {
+
+            margin-bottom: 10px;
+
+            font-size: 13px;
+
+            letter-spacing: 2px;
 
             opacity: 0.6;
 
-            margin-bottom: 10px;
+        }
+
+        select {
+
+            width: 100%;
+
+            padding: 17px;
+
+            border-radius: 12px;
+
+            border: 2px solid white;
+
+            background: #292929;
+
+            color: white;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+        }
+
+        .choice-buttons {
+
+            display: flex;
+
+            gap: 10px;
+
+        }
+
+        .choice-buttons button {
+
+            margin-top: 0;
+
+        }
+
+        .selected {
+
+            background: white;
+
+            color: black;
+
         }
 
         .player-controls {
+
             display: flex;
 
             align-items: center;
@@ -113,32 +174,39 @@
             justify-content: center;
 
             gap: 15px;
+
         }
 
-        .player-button {
-            width: 70px;
+        .player-controls button {
+
+            width: 65px;
 
             padding: 15px;
 
-            margin: 0;
+            margin-top: 0;
 
-            font-size: 28px;
+            font-size: 25px;
+
         }
 
         #playerCount {
+
+            min-width: 70px;
+
             font-size: 35px;
 
             font-weight: bold;
 
-            min-width: 70px;
         }
 
         #status {
-            margin-top: 25px;
 
-            font-size: 14px;
+            margin-top: 20px;
+
+            font-size: 13px;
 
             opacity: 0.6;
+
         }
 
     </style>
@@ -148,368 +216,491 @@
 
 <body>
 
-    <div class="controller">
 
-        <h1>🦑 SQUIDFIT</h1>
+<div class="controller">
 
-        <div class="subtitle">
-            GAME CONTROLLER
+    <h1>🦑 SQUIDFIT</h1>
+
+    <div class="subtitle">
+        GAME CONTROLLER
+    </div>
+
+
+    <!-- START -->
+
+    <button id="startButton">
+        ▶ START GAME
+    </button>
+
+
+    <!-- PATHFIT SAYS -->
+
+    <div class="section">
+
+        <div class="label">
+            COMMAND TYPE
         </div>
 
 
-        <!-- START -->
+        <div class="choice-buttons">
 
-        <button id="startButton">
-            ▶ START GAME
-        </button>
+            <button id="saysButton">
+                PATHFIT SAYS
+            </button>
 
+            <button id="normalButton">
+                NORMAL
+            </button>
 
-        <!-- NEXT COMMAND -->
-
-        <button id="nextButton">
-            ⚡ NEXT CHALLENGE
-        </button>
-
-
-        <!-- PLAYER COUNT -->
-
-        <div class="player-section">
-
-            <div class="player-title">
-                PLAYERS REMAINING
-            </div>
-
-
-            <div class="player-controls">
-
-                <button
-                    id="minusPlayer"
-                    class="player-button">
-
-                    −
-
-                </button>
-
-
-                <div id="playerCount">
-                    53
-                </div>
-
-
-                <button
-                    id="plusPlayer"
-                    class="player-button">
-
-                    +
-
-                </button>
-
-            </div>
-
-        </div>
-
-
-        <div id="status">
-            READY
         </div>
 
     </div>
 
 
-    <script type="module">
+    <!-- COMMAND -->
 
-        // =========================
-        // FIREBASE IMPORTS
-        // =========================
+    <div class="section">
 
-        import {
-            initializeApp
-        }
-        from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+        <div class="label">
+            CHOOSE COMMAND
+        </div>
 
 
-        import {
-            getDatabase,
-            ref,
-            set
-        }
-        from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
+        <select id="commandSelect">
 
+            <option value="5 SQUATS!">
+                5 SQUATS!
+            </option>
 
-        // =========================
-        // FIREBASE CONFIG
-        // =========================
+            <option value="HIGH KNEES!">
+                HIGH KNEES!
+            </option>
 
-        const firebaseConfig = {
+            <option value="CLAP 5 TIMES!">
+                CLAP 5 TIMES!
+            </option>
 
-            apiKey:
-                "AIzaSyAPAyfpSbN8RhHgenMIxFqZTQds1hjCofE",
+            <option value="TOUCH YOUR TOES!">
+                TOUCH YOUR TOES!
+            </option>
 
-            authDomain:
-                "pathfit-says.firebaseapp.com",
+            <option value="TOUCH YOUR KNEES!">
+                TOUCH YOUR KNEES!
+            </option>
 
-            databaseURL:
-                "https://pathfit-says-default-rtdb.firebaseio.com",
+            <option value="JUMP 5 TIMES!">
+                JUMP 5 TIMES!
+            </option>
 
-            projectId:
-                "pathfit-says",
+            <option value="MARCH IN PLACE!">
+                MARCH IN PLACE!
+            </option>
 
-            storageBucket:
-                "pathfit-says.firebasestorage.app",
+            <option value="WAVE YOUR HANDS!">
+                WAVE YOUR HANDS!
+            </option>
 
-            messagingSenderId:
-                "369392989206",
 
-            appId:
-                "1:369392989206:web:ef2a369b78afb59a0bb137"
+            <option value="DANCE!">
+                DANCE!
+            </option>
 
-        };
+            <option value="ACT LIKE A CHICKEN!">
+                ACT LIKE A CHICKEN!
+            </option>
 
+            <option value="WALK LIKE A ROBOT!">
+                WALK LIKE A ROBOT!
+            </option>
 
-        // =========================
-        // CONNECT FIREBASE
-        // =========================
+            <option value="POSE LIKE A SUPERHERO!">
+                POSE LIKE A SUPERHERO!
+            </option>
 
-        const app =
-            initializeApp(firebaseConfig);
+            <option value="MAKE A HEART WITH YOUR HANDS!">
+                MAKE A HEART WITH YOUR HANDS!
+            </option>
 
+            <option value="SHAKE YOUR SHOULDERS!">
+                SHAKE YOUR SHOULDERS!
+            </option>
 
-        const db =
-            getDatabase(app);
+            <option value="FREEZE!">
+                FREEZE!
+            </option>
 
 
-        const gameRef =
-            ref(db, "game");
+            <option value="5 LUNGES!">
+                5 LUNGES!
+            </option>
 
+            <option value="3 BURPEES!">
+                3 BURPEES!
+            </option>
 
-        const playersRef =
-            ref(db, "game/players");
+            <option value="FROG JUMP!">
+                FROG JUMP!
+            </option>
 
+            <option value="CRAB WALK!">
+                CRAB WALK!
+            </option>
 
-        // =========================
-        // COMMANDS
-        // =========================
+            <option value="RUN IN PLACE!">
+                RUN IN PLACE!
+            </option>
 
-        const commands = [
+            <option value="STAND ON ONE LEG!">
+                STAND ON ONE LEG!
+            </option>
 
-            "5 SQUATS!",
-            "HIGH KNEES!",
-            "CLAP 5 TIMES!",
-            "TOUCH YOUR TOES!",
-            "TOUCH YOUR KNEES!",
-            "JUMP 5 TIMES!",
-            "MARCH IN PLACE!",
-            "WAVE YOUR HANDS!",
+            <option value="DO 3 JUMPING JACKS!">
+                DO 3 JUMPING JACKS!
+            </option>
 
-            "DANCE!",
-            "ACT LIKE A CHICKEN!",
-            "WALK LIKE A ROBOT!",
-            "POSE LIKE A SUPERHERO!",
-            "MAKE A HEART WITH YOUR HANDS!",
-            "SHAKE YOUR SHOULDERS!",
-            "FREEZE!",
+            <option value="DO 5 ARM CIRCLES!">
+                DO 5 ARM CIRCLES!
+            </option>
 
-            "5 LUNGES!",
-            "3 BURPEES!",
-            "FROG JUMP!",
-            "CRAB WALK!",
-            "RUN IN PLACE!",
-            "STAND ON ONE LEG!",
-            "DO 3 JUMPING JACKS!",
-            "DO 5 ARM CIRCLES!",
 
-            "SPIN AROUND!",
-            "TOUCH YOUR HEAD!",
-            "TOUCH YOUR LEFT EAR!",
-            "TOUCH YOUR RIGHT KNEE!",
-            "RAISE BOTH HANDS!",
-            "CROUCH DOWN!",
-            "STAND STILL!",
+            <option value="SPIN AROUND!">
+                SPIN AROUND!
+            </option>
 
-            "DO 2 SQUATS!",
-            "JUMP ONCE!",
-            "CLAP 3 TIMES!",
-            "TURN AROUND!",
-            "WIGGLE YOUR ARMS!",
-            "PRETEND TO BE A FROG!"
+            <option value="TOUCH YOUR HEAD!">
+                TOUCH YOUR HEAD!
+            </option>
 
-        ];
+            <option value="TOUCH YOUR LEFT EAR!">
+                TOUCH YOUR LEFT EAR!
+            </option>
 
+            <option value="TOUCH YOUR RIGHT KNEE!">
+                TOUCH YOUR RIGHT KNEE!
+            </option>
 
-        // =========================
-        // VARIABLES
-        // =========================
+            <option value="RAISE BOTH HANDS!">
+                RAISE BOTH HANDS!
+            </option>
 
-        let lastCommand = "";
+            <option value="CROUCH DOWN!">
+                CROUCH DOWN!
+            </option>
 
-        let players = 53;
+            <option value="STAND STILL!">
+                STAND STILL!
+            </option>
 
 
-        // =========================
-        // SEND COMMAND
-        // =========================
+            <option value="DO 2 SQUATS!">
+                DO 2 SQUATS!
+            </option>
 
-        function sendCommand() {
+            <option value="JUMP ONCE!">
+                JUMP ONCE!
+            </option>
 
-            let command;
+            <option value="CLAP 3 TIMES!">
+                CLAP 3 TIMES!
+            </option>
 
+            <option value="TURN AROUND!">
+                TURN AROUND!
+            </option>
 
-            do {
+            <option value="WIGGLE YOUR ARMS!">
+                WIGGLE YOUR ARMS!
+            </option>
 
-                command =
-                    commands[
-                        Math.floor(
-                            Math.random() *
-                            commands.length
-                        )
-                    ];
+            <option value="PRETEND TO BE A FROG!">
+                PRETEND TO BE A FROG!
+            </option>
 
-            } while (
-                command === lastCommand
-            );
+        </select>
 
 
-            lastCommand = command;
+        <button id="sendButton">
+            📢 SEND COMMAND
+        </button>
 
+    </div>
 
-            // 50% chance of PATHFIT SAYS
 
-            const pathfitSays =
-                Math.random() < 0.5;
+    <!-- PLAYERS -->
 
+    <div class="section">
 
-            set(gameRef, {
+        <div class="label">
+            PLAYERS REMAINING
+        </div>
 
-                command: command,
 
-                pathfitSays: pathfitSays,
+        <div class="player-controls">
 
-                time: Date.now()
+            <button id="minusPlayer">
+                −
+            </button>
 
-            })
 
-            .then(() => {
+            <div id="playerCount">
+                53
+            </div>
 
-                document.getElementById(
-                    "status"
-                ).innerHTML =
-                    "COMMAND SENT ✓";
 
-            })
+            <button id="plusPlayer">
+                +
+            </button>
 
-            .catch((error) => {
+        </div>
 
-                console.error(error);
+    </div>
 
-                document.getElementById(
-                    "status"
-                ).innerHTML =
-                    "CONNECTION ERROR";
 
-            });
+    <div id="status">
+        READY
+    </div>
 
-        }
+</div>
 
 
-        // =========================
-        // START GAME
-        // =========================
 
-        document.getElementById(
-            "startButton"
-        ).addEventListener(
-            "click",
-            sendCommand
-        );
+<script type="module">
 
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 
-        // =========================
-        // NEXT CHALLENGE
-        // =========================
+import {
+    getDatabase,
+    ref,
+    set
+}
+from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
 
-        document.getElementById(
-            "nextButton"
-        ).addEventListener(
-            "click",
-            sendCommand
-        );
 
+// ===============================
+// FIREBASE
+// ===============================
 
-        // =========================
-        // REMOVE PLAYER
-        // =========================
+const firebaseConfig = {
 
-        document.getElementById(
-            "minusPlayer"
-        ).addEventListener(
-            "click",
-            function () {
+    apiKey:
+        "AIzaSyAPAyfpSbN8RhHgenMIxFqZTQds1hjCofE",
 
-                if (players > 0) {
+    authDomain:
+        "pathfit-says.firebaseapp.com",
 
-                    players--;
+    databaseURL:
+        "https://pathfit-says-default-rtdb.firebaseio.com",
 
-                    set(
-                        playersRef,
-                        players
-                    );
+    projectId:
+        "pathfit-says",
 
-                    document.getElementById(
-                        "playerCount"
-                    ).innerHTML =
-                        players;
+    storageBucket:
+        "pathfit-says.firebasestorage.app",
 
-                    document.getElementById(
-                        "status"
-                    ).innerHTML =
-                        "PLAYER REMOVED";
+    messagingSenderId:
+        "369392989206",
 
-                }
+    appId:
+        "1:369392989206:web:ef2a369b78afb59a0bb137"
 
-            }
-        );
+};
 
 
-        // =========================
-        // ADD PLAYER
-        // =========================
+const app =
+    initializeApp(firebaseConfig);
 
-        document.getElementById(
-            "plusPlayer"
-        ).addEventListener(
-            "click",
-            function () {
+const db =
+    getDatabase(app);
 
-                if (players < 53) {
 
-                    players++;
+const gameRef =
+    ref(db, "game");
 
-                    set(
-                        playersRef,
-                        players
-                    );
+const playersRef =
+    ref(db, "game/players");
 
-                    document.getElementById(
-                        "playerCount"
-                    ).innerHTML =
-                        players;
 
-                    document.getElementById(
-                        "status"
-                    ).innerHTML =
-                        "PLAYER ADDED";
+// ===============================
+// VARIABLES
+// ===============================
 
-                }
+let pathfitSays = true;
 
-            }
-        );
+let players = 53;
 
 
-        console.log(
-            "SQUIDFIT Controller connected!"
-        );
+// ===============================
+// PATHFIT SAYS BUTTON
+// ===============================
 
-    </script>
+document
+.getElementById("saysButton")
+.addEventListener("click", () => {
+
+    pathfitSays = true;
+
+    document
+    .getElementById("saysButton")
+    .classList.add("selected");
+
+    document
+    .getElementById("normalButton")
+    .classList.remove("selected");
+
+});
+
+
+// ===============================
+// NORMAL BUTTON
+// ===============================
+
+document
+.getElementById("normalButton")
+.addEventListener("click", () => {
+
+    pathfitSays = false;
+
+    document
+    .getElementById("normalButton")
+    .classList.add("selected");
+
+    document
+    .getElementById("saysButton")
+    .classList.remove("selected");
+
+});
+
+
+// ===============================
+// SEND COMMAND
+// ===============================
+
+function sendCommand() {
+
+    const command =
+        document
+        .getElementById("commandSelect")
+        .value;
+
+
+    set(gameRef, {
+
+        command: command,
+
+        pathfitSays: pathfitSays,
+
+        time: Date.now()
+
+    })
+
+    .then(() => {
+
+        document
+        .getElementById("status")
+        .innerHTML =
+            "COMMAND SENT ✓";
+
+    })
+
+    .catch((error) => {
+
+        console.error(error);
+
+        document
+        .getElementById("status")
+        .innerHTML =
+            "CONNECTION ERROR";
+
+    });
+
+}
+
+
+// ===============================
+// START GAME
+// ===============================
+
+document
+.getElementById("startButton")
+.addEventListener("click", () => {
+
+    sendCommand();
+
+    document
+    .getElementById("status")
+    .innerHTML =
+        "GAME STARTED ✓";
+
+});
+
+
+// ===============================
+// SEND BUTTON
+// ===============================
+
+document
+.getElementById("sendButton")
+.addEventListener(
+    "click",
+    sendCommand
+);
+
+
+// ===============================
+// MINUS PLAYER
+// ===============================
+
+document
+.getElementById("minusPlayer")
+.addEventListener("click", () => {
+
+    if (players > 0) {
+
+        players--;
+
+        document
+        .getElementById("playerCount")
+        .innerHTML = players;
+
+
+        set(playersRef, players);
+
+    }
+
+});
+
+
+// ===============================
+// PLUS PLAYER
+// ===============================
+
+document
+.getElementById("plusPlayer")
+.addEventListener("click", () => {
+
+    if (players < 53) {
+
+        players++;
+
+        document
+        .getElementById("playerCount")
+        .innerHTML = players;
+
+
+        set(playersRef, players);
+
+    }
+
+});
+
+
+console.log(
+    "SQUIDFIT CONTROLLER CONNECTED!"
+);
+
+</script>
+
 
 </body>
 
