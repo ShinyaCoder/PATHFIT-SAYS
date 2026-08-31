@@ -149,7 +149,8 @@ button:hover {
    ========================= */
 
 .game-screen {
-
+    position: relative;
+}
     display: none;
 
     min-height: 100vh;
@@ -158,6 +159,36 @@ button:hover {
 
 }
 
+.game-screen {
+    position: relative;
+}
+
+.fullscreen-button {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+
+    width: auto;
+    padding: 7px 10px;
+
+    border: 1px solid white;
+    border-radius: 7px;
+
+    background: #292929;
+    color: white;
+
+    font-size: 11px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    z-index: 1000;
+}
+
+.fullscreen-button:hover {
+    background: white;
+    color: black;
+}
 
 /* GAME HEADER */
 
