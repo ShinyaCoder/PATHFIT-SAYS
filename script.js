@@ -127,6 +127,11 @@ function startGame() {
 
     }
 
+    if (fullscreenButton) {
+        fullscreenButton.style.display = "none";
+    }
+
+    nextCommand();
 }
 
 
