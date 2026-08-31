@@ -164,30 +164,28 @@ button:hover {
 }
 
 .fullscreen-button {
-    position: absolute;
-    top: 12px;
-    right: 12px;
+    position: fixed;
+    top: 20px;
+    right: 20px;
 
     width: auto;
-    padding: 7px 10px;
+    padding: 8px 12px;
 
-    border: 1px solid white;
-    border-radius: 7px;
+    font-size: 13px;
 
-    background: #292929;
+    background: #171720;
     color: white;
 
-    font-size: 11px;
-    font-weight: bold;
+    border: 2px solid white;
+    border-radius: 8px;
 
     cursor: pointer;
 
-    z-index: 1000;
+    z-index: 9999;
 }
 
-.fullscreen-button:hover {
-    background: white;
-    color: black;
+.fullscreen-button:active {
+    transform: scale(0.95);
 }
 
 /* GAME HEADER */
