@@ -324,6 +324,48 @@ if (instructionsButton) {
 
 }
 
+// ===============================
+// FULL SCREEN
+// ===============================
+
+const fullscreenButton =
+    document.getElementById("fullscreenButton");
+
+if (fullscreenButton) {
+
+    fullscreenButton.addEventListener("click", async () => {
+
+        try {
+
+            if (!document.fullscreenElement) {
+
+                await document.documentElement.requestFullscreen();
+
+                fullscreenButton.innerHTML =
+                    "⛶ EXIT FULL SCREEN";
+
+            } else {
+
+                await document.exitFullscreen();
+
+                fullscreenButton.innerHTML =
+                    "⛶ FULL SCREEN";
+
+            }
+
+        } catch (error) {
+
+            console.error(
+                "Fullscreen error:",
+                error
+            );
+
+        }
+
+    });
+
+}
+
 
 console.log(
     "SQUIDFIT GAME CONNECTED!"
